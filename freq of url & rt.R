@@ -9,6 +9,7 @@ library(wordcloud2)
 library(ggplot2)
 library(stringr)
 library(tidyverse)
+library(quanteda)
 
 #data preparation:
 
