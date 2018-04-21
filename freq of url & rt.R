@@ -1,6 +1,6 @@
 #please install the following packages using install.packages("") if you don't have them installed
 #e.g:
-#install.packages("tidytext")
+##install.packages(c("ldatuning",tidytext","topicmodels","knitr","dplyr","ggplot2","stringr","tidyverse","quanteda"))
 library(tidytext)
 library(topicmodels)
 library(knitr)
@@ -78,7 +78,7 @@ bot520_td3
 library(ldatuning)
 result <- FindTopicsNumber(
   bot520_td3,
-  topics = seq(from = 2, to = 30, by = 1),
+  topics = seq(from = 10, to = 300, by = 10),
   metrics = c("Griffiths2004", "CaoJuan2009", "Arun2010", "Deveaud2014"),
   method = "Gibbs",
   control = list(seed = 77),
