@@ -242,41 +242,41 @@ mean(top.gamma_real2000$topgamma)
 
 ##1. retweet:
 bot2000_rt$bot <- "bot"
-real500_rt$bot <- "nonbot"
+real2000_rt$bot <- "nonbot"
 
-RTfreq <- rbind(bot2000_rt,real500_rt)
+RTfreq <- rbind(bot2000_rt,real2000_rt)
 names(RTfreq) <- c("Type","Number")
 
 ggplot(RTfreq, aes(Number,fill=Type))+geom_density(alpha=0.7)
 ggplot(RTfreq, aes(Number,fill=Type))+geom_histogram(alpha=0.7)
 ggplot(RTfreq, aes(y=Number,x=Type, fill=Type))+geom_boxplot()
 
-t.test(bot2000_rt$freq_of_RT,real500_rt$freq_of_RT)
+t.test(bot2000_rt$freq_of_RT,real2000_rt$freq_of_RT)
 #2. url:
 bot2000_urlfreq$bot <- "bot"
-real500_urlfreq$bot <- "nonbot"
+real2000_urlfreq$bot <- "nonbot"
 
-URLfreq <- rbind(bot2000_urlfreq[,c(1,3)],real500_urlfreq[,c(1,3)])
+URLfreq <- rbind(bot2000_urlfreq[,c(1,3)],real2000_urlfreq[,c(1,3)])
 names(URLfreq) <- c("Type","Number")
 
 ggplot(URLfreq, aes(Number,fill=Type))+geom_density(alpha=0.7)
 ggplot(URLfreq, aes(Number,fill=Type))+geom_histogram(alpha=0.7)
 ggplot(URLfreq, aes(y=Number,x=Type, fill=Type))+geom_boxplot()
 
-t.test(bot2000_urlfreq$n,real500_urlfreq$n)
+t.test(bot2000_urlfreq$n,real2000_urlfreq$n)
 
 #3. lda gamma:
 top.gamma_bot2000$document <- "bot"
-top.gamma_real500$document <- "nonbot"
+top.gamma_real2000$document <- "nonbot"
 
-Top.gamma <- rbind(top.gamma_bot2000,top.gamma_real500)
+Top.gamma <- rbind(top.gamma_bot2000,top.gamma_real2000)
 names(Top.gamma) <- c("Type","Gamma")
 
 ggplot(Top.gamma, aes(Gamma,fill=Type))+geom_density(alpha=0.7)
 ggplot(Top.gamma, aes(Gamma,fill=Type))+geom_histogram(alpha=0.7)
 ggplot(Top.gamma, aes(y=Gamma,x=Type, fill=Type))+geom_boxplot()
 
-t.test(top.gamma_bot2000$topgamma,top.gamma_real500$topgamma)
+t.test(top.gamma_bot2000$topgamma,top.gamma_real2000$topgamma)
 
 
 
