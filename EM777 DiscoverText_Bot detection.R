@@ -65,6 +65,8 @@ typeof(bot2000.tidy1)
 bot2000.tidy2 <- tbl_df(cbind(bot2000.tidy$bot, bot2000.tidy1))
 names(bot2000.tidy2) <- c("bot","tweet")
 
+bot2000.tidy2 <- bot2000.tidy2[which(!grepl("[^\x01-\x7F]+", bot2000.tidy2$tweet)),]
+
 bot2000_tidy3 <- bot2000.tidy2 %>% unnest_tokens(word, tweet) %>% 
   anti_join(stop_words) %>%  group_by(bot) %>% 
   count(word, sort=T) %>% arrange(bot)
@@ -115,11 +117,26 @@ load("topics_bot2000.Rdata")
 
 top.gamma_bot2000 <- topics_bot2000 %>% group_by(document)%>% summarise(topgamma=max(gamma))
 #save(top.gamma_bot2000,file="top.gamma_bot2000.Rdata")
-load("top.gamma_bot2000.Rdata")
+#load("top.gamma_bot2000.Rdata")
 
 #some documents have two top topics:
-View(topics_bot2000 %>% filter(document==1986) %>% filter(gamma==max(gamma)))
+#View(topics_bot2000 %>% filter(document==1986) %>% filter(gamma==max(gamma)))
+
 mean(top.gamma_bot2000$topgamma)
+
+
+for (k in c(2,3)) {
+  lda_bot2000 <- LDA(bot2000_td3, k = k, method='Gibbs',control = list(seed = 1234))
+  topics_bot2000 <- tidy(lda_bot2000,matrix="gamma")
+  topics_bot2000$document <- as.numeric(topics_bot2000$document)
+  topics_bot2000 <- topics_bot2000 %>% arrange(document)
+  top.gamma_bot2000 <- topics_bot2000 %>% group_by(document)%>% summarise(topgamma=max(gamma))
+}
+
+
+
+
+
 
 topicmodels2LDAvis <- function(x, ...){
   post <- topicmodels::posterior(x)
@@ -138,6 +155,10 @@ serVis(topicmodels2LDAvis(lda_bot2000), out.dir = "bot_vis" ,open.browser = T)
 
 library(jsonlite)
 fromJSON(lda_bot2000) -> z
+
+
+#----------------------------------------------#
+
 
 #II. Non-bot data:
 #data preparation:
@@ -227,16 +248,19 @@ topics_real2000 <- tidy(lda_real2000,matrix="gamma")
 topics_real2000$document <- as.numeric(topics_real2000$document)
 topics_real2000 <- topics_real2000 %>% arrange(document)
 #save(topics_real2000, file="topics_real2000.Rdata")
-load("topics_real2000.Rdata")
+#load("topics_real2000.Rdata")
 
 top.gamma_real2000 <- topics_real2000 %>% group_by(document)%>% summarise(topgamma=max(gamma))
 #save(top.gamma_real2000,file="top.gamma_real2000.Rdata")
-load("top.gamma_real2000.Rdata")
+#load("top.gamma_real2000.Rdata")
 
 #some documents have two top topics:
 #View(topics_real2000 %>% filter(document==1986) %>% filter(gamma==max(gamma)))
 
 mean(top.gamma_real2000$topgamma)
+
+#-----------------------------------------------------#
+
 
 #III. Comparison between bot and non-bot data:
 
